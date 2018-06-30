@@ -31,4 +31,3 @@ if (f(a)*f(b) < 0):#Aplicando Bozzano
    print("A raiz da função , com precisão de {} casas decimais , é {}".format(p,x))
 else:
    print("Não tem raiz unica no intervalo")#Caso Bozzano esteja falso
-
