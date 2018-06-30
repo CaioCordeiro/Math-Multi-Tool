@@ -2,12 +2,14 @@
 from math import *
 import math
 #Função para truncar de acordo com a precisão
+
 x = 1
 def trun_n_d(n,d):
     s=repr(n).split('.')#dando split no numero pelo "." criando uma lista com 2 valores , um com o numero inteiro e outro com um numero decimal
     if (len(s)==1):
         return int(s[0])#se s só tiver 1 valor é porque o numero ja é inteiro , por isso retorna ele mesmo
     return float(s[0]+'.'+s[1][:int(d)])#retorna o numero inteira + "." + o 1 valor + uma sequencia de numeros definida por "d"
+
 def f(fx,x):#definindo a função matematica
    f = eval(fx)
    return f
