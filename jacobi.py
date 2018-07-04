@@ -80,22 +80,15 @@ def _get_b_array(number_of_variables):
 
 # Start of the program
 
+def jacobi():
+    number_of_variables = int(input("How many variables do you want to have? "))
+    _print_arrays(number_of_variables)
+    A = _get_A_array(number_of_variables)
 
-number_of_variables = int(input("How many variables do you want to have? "))
-_print_arrays(number_of_variables)
-A = _get_A_array(number_of_variables)
+    b = _get_b_array(number_of_variables)
 
-b = _get_b_array(number_of_variables)
+    x = jacobi(A, b)
 
-x = jacobi(A, b)
+    _print_arrays_final(number_of_variables, A, b, x)
 
-_print_arrays_final(number_of_variables, A, b, x)
-
-print("A:")
-pprint(A)
-
-print("b:")
-pprint(b)
-
-print("x:")
-pprint(x)
+jacobi()
