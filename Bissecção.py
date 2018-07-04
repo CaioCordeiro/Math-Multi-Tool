@@ -13,25 +13,29 @@ def trun_n_d(n,d):
 def f(fx,x):#definindo a função matematica
    f = eval(fx)
    return f
-fx = input("Insira a função: ")
+def bisseccao():
+   fx = input("Insira a função: ")
 
-a = float(input("Insira a: "))#1º Valor do intervalo [a,b]
-b = float(input("Insira b: "))
-p = float(input("Insira a precisão: "))#Numero de casas decimais
-pl = 10**(-p)#Definindo a precisão em numeros decimais 
-if (f(fx ,a)*f(fx ,b) < 0):#Aplicando Bozzano
-   x = (a+b)/2#1ª media do intervalo
-   if (f(fx,x)*f(fx,b)<0):#Define se o Numero achado será o novo "a" ou o novo "b"
-      a = x
-   else:
-      b = x
-   while (abs(f(fx,x))>pl):#Cria um loop em que ele só termina caso o numero atender a precisão
-      x = (a+b)/2
-      if (f(fx,x)*f(fx,b)<0):
+   a = float(input("Insira a: "))#1º Valor do intervalo [a,b]
+   b = float(input("Insira b: "))
+   p = float(input("Insira a precisão(Entre 1 - 16): "))#Numero de casas decimais
+   pl = 10**(-p)#Definindo a precisão em numeros decimais 
+   if (f(fx ,a)*f(fx ,b) < 0):#Aplicando Bozzano
+      x = (a+b)/2#1ª media do intervalo
+      
+      if (f(fx,x)*f(fx,b)<0):#Define se o Numero achado será o novo "a" ou o novo "b"
          a = x
       else:
          b = x
-   x = trun_n_d(x,p)#Trunca o  numero pra caber na precisão
-   print("A raiz da função , com precisão de {} casas decimais , é {}".format(p,x))
-else:
-   print("Não tem raiz unica no intervalo")#Caso Bozzano esteja falso
+      while (abs(f(fx,x))>pl):#Cria um loop em que ele só termina caso o numero atender a precisão
+         x = (a+b)/2
+         if (f(fx,x)*f(fx,b)<0):
+            a = x
+         else:
+            b = x
+      x = trun_n_d(x,p)#Trunca o  numero pra caber na precisão
+      print("A raiz da função , com precisão de {} casas decimais , é {}".format(p,x))
+   else:
+      print("Não tem raiz unica no intervalo")#Caso Bozzano esteja falso
+
+bisseccao()
