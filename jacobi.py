@@ -2,7 +2,7 @@ from pprint import pprint
 from numpy import array, zeros, diag, diagflat, dot
 
 
-def jacobi(A, b, N=2000):
+def _jacobi(A, b, N=2000):
 
     x = zeros(len(A[0]))
     x_ant = zeros(len(A[0]))
@@ -87,7 +87,7 @@ def jacobi():
 
     b = _get_b_array(number_of_variables)
 
-    x = jacobi(A, b)
+    x = _jacobi(A, b)
 
     _print_arrays_final(number_of_variables, A, b, x)
 
