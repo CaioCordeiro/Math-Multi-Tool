@@ -10,6 +10,45 @@ import math
 from pprint import pprint
 from numpy import array, zeros, diag, diagflat, dot
 
+
+def f(fx,x):#definindo a função matematica
+   f = eval(fx)
+   return f
+
+
+'''
+
+
+		METODO DE SIMPSON
+
+
+'''
+
+def simpson():
+    f = input("Insira a função : ")
+    N =  float(input("Numero de pontos: "))
+    # lower & upper limits of the integral
+    a = float(input("Insira a : "))
+    b = float(input("Insira b : "))
+
+    # step size
+    h = (b - a) / N
+
+    # Sum the values for Simpson's integration
+    s = f(f, a) + f(f, b)
+    for i in range(1, N):
+        t = a + i * h
+        if i % 2 == 1:
+            s += 4.0 * f(f, t)
+        else:
+            s += 2.0 * f(f, t)
+
+    # multiply by h/3 to get the integral
+    # and divide by pi to get the Bessel function.
+    print(s * h / (3.0)) 
+
+
+
 '''
 
 
@@ -121,10 +160,6 @@ def trun_n_d(n,d):
     if (len(s)==1):
         return int(s[0])#se s só tiver 1 valor é porque o numero ja é inteiro , por isso retorna ele mesmo
     return float(s[0]+'.'+s[1][:int(d)])#retorna o numero inteira + "." + o 1 valor + uma sequencia de numeros definida por "d"
-
-def f(fx,x):#definindo a função matematica
-   f = eval(fx)
-   return f
 def bisseccao():
    fx = input("Insira a função: ")
 
@@ -179,8 +214,8 @@ gui3 = """
 """
 gui4 = """
 ===============================
-|Digite (1) para -> Trapézios 
-|Digite (2) para -> Simpsom	  
+|Digite (1) para -> Simpson 
+|Digite (2) para -> Trapézios  
 ===============================
 """
 gui5 = """
@@ -227,7 +262,7 @@ while True:
 	elif x == 3:
 		y = int(input(gui4))
 		if y == 1:
-			#INSIRA O METODO DOS TRAPÉZIOS AQUI
+			simpson()
 			continue
 		else:
 			print(guin)
