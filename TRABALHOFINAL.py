@@ -5,6 +5,9 @@
 
 
 '''
+
+#coding: UTF-8
+
 from math import *
 import math
 from pprint import pprint
@@ -13,10 +16,9 @@ from numpy.polynomial import Polynomial as P
 from numpy import polynomial
 
 
-
-def f(fx,x):#definindo a função matematica
-   f = eval(fx)
-   return f
+def f(fx, x):  # definindo a função matematica
+    f = eval(fx)
+    return f
 
 
 def newton():
@@ -26,7 +28,8 @@ def newton():
     while True:
         k += 1
         while True:
-            print("Digite as coordenadas do ", k, "º ponto separados por espaço:", end="\nf para finalizar \n")
+            print("Digite as coordenadas do ", k,
+                  "º ponto separados por espaço:", end="\nf para finalizar \n")
             l = input()  # irá receber a entrada do usuário
             if l == "f".lower():  # Verifica se o usuário quer terminar a entrada de dados
                 break
@@ -37,7 +40,8 @@ def newton():
                 print("Entrada inválida, tente novamente!")
         if l == "f".lower():
             break
-        for i in range(len(l)):  # transfoma a entrada do usuário em um ponto e adiciona a lista de pontos
+        # transfoma a entrada do usuário em um ponto e adiciona a lista de pontos
+        for i in range(len(l)):
             l[i] = float(l[i])
         pontos.append(l)
 
@@ -52,9 +56,11 @@ def newton():
         l = []  # lista que irá receber as diferenças divididas de ordem i+1
         for j in range(len(pontos) - i - 1):
             # calculando a j+1 difença dividida de ordem i+1
-            dif = (tabela[i][j + 1] - tabela[i][j]) / (pontos[j + 1 + i][0] - pontos[j][0])
+            dif = (tabela[i][j + 1] - tabela[i][j]) / \
+                (pontos[j + 1 + i][0] - pontos[j][0])
             l.append(dif)
-        tabela.append(l)  # adiciona a tabela de diferenças divididas as difenças divididas de ordem i+1
+        # adiciona a tabela de diferenças divididas as difenças divididas de ordem i+1
+        tabela.append(l)
     difdiv = []  # irei pegar a primeira diferença dividida de cada ordem e adicionar a essa lista,
     # pois elas corresponderão a d0, d1... dn do polinômio como na fórmula da página 220 do livro
     for i in range(len(tabela)):
@@ -64,7 +70,8 @@ def newton():
     for i in range(1, len(pontos)):
         produtorio = 1
         for k in range(i):  # Aqui será feito o produtório do final da página
-            produtorio *= (P([-pontos[k][0], 1]))  # P([-pontos[k][0], 1]) = (X-Xk)
+            # P([-pontos[k][0], 1]) = (X-Xk)
+            produtorio *= (P([-pontos[k][0], 1]))
         somatorio += difdiv[i] * produtorio
     Pn = difdiv[0] + somatorio
     funcao = list(Pn)  # tranformo o polinômio em lista
@@ -98,7 +105,8 @@ def newton():
     print("(x,Pn(x))")
     for i in range(len(pontos)):
         print("(%a,%a)" % (pontos[i][0], round(Pn(pontos[i][0]), 4)))
-    
+
+
 '''
 
 
@@ -107,9 +115,10 @@ def newton():
 
 '''
 
+
 def simpson():
     fx = input("Insira a função : ")
-    N =  int(input("Numero de pontos: "))
+    N = int(input("Numero de pontos: "))
     # lower & upper limits of the integral
     a = float(input("Insira a : "))
     b = float(input("Insira b : "))
@@ -128,8 +137,7 @@ def simpson():
 
     # multiply by h/3 to get the integral
     # and divide by pi to get the Bessel function.
-    print(s * h / (3.0)) 
-
+    print(s * h / (3.0))
 
 
 '''
@@ -140,7 +148,8 @@ def simpson():
 
 '''
 
-def jacobi(A, b, N=2000):
+
+def _jacobi(A, b, N=2000):
 
     x = zeros(len(A[0]))
     x_ant = zeros(len(A[0]))
@@ -156,7 +165,7 @@ def jacobi(A, b, N=2000):
 
 
 def _print_arrays(number_of_variables):
-    print("\n\n\n Your table:\n\n")
+    print("\n\n\n Sua Tabela:\n\n")
     for collumn in range(0, number_of_variables):
         print("|-----", end='')
     print("|   |----|   |----|")
@@ -175,7 +184,7 @@ def _print_arrays(number_of_variables):
 
 
 def _print_arrays_final(number_of_variables, A, b, x):
-    print("\n\n\n Your table:\n\n")
+    print("\n\n\n Sua tabela:\n\n")
     for collumn in range(0, number_of_variables):
         print("|------", end='')
     print("|   |-------|   |------|")
@@ -201,7 +210,7 @@ def _get_A_array(number_of_variables):
     for row in range(0, number_of_variables):
         for collumn in range(0, number_of_variables):
             temp_collumn.append(
-                float(input("Type the A"+str(row)+str(collumn)+" :")))
+                float(input("Digite o A"+str(row)+str(collumn)+" :")))
         print("")
         A.append(temp_collumn)
         temp_collumn = []
@@ -212,20 +221,22 @@ def _get_b_array(number_of_variables):
     b = []
     for variable in range(0, number_of_variables):
         b.append(
-            float(input("Type the b" + str(variable) + " :")))
+            float(input("Digite o b" + str(variable) + " :")))
     print("")
     return array(b)
 
 # Start of the program
 
-def jacobi1():
-    number_of_variables = int(input("How many variables do you want to have? "))
+
+def jacobi():
+    number_of_variables = int(
+        input("Quantas variáveis você quer calcular? "))
     _print_arrays(number_of_variables)
     A = _get_A_array(number_of_variables)
 
     b = _get_b_array(number_of_variables)
 
-    x = jacobi(A, b)
+    x = _jacobi(A, b)
 
     _print_arrays_final(number_of_variables, A, b, x)
 
@@ -238,35 +249,44 @@ def jacobi1():
 
 '''
 
-def trun_n_d(n,d):
-    s=repr(n).split('.')#dando split no numero pelo "." criando uma lista com 2 valores , um com o numero inteiro e outro com um numero decimal
-    if (len(s)==1):
-        return int(s[0])#se s só tiver 1 valor é porque o numero ja é inteiro , por isso retorna ele mesmo
-    return float(s[0]+'.'+s[1][:int(d)])#retorna o numero inteira + "." + o 1 valor + uma sequencia de numeros definida por "d"
-def bisseccao():
-   fx = input("Insira a função: ")
 
-   a = float(input("Insira a: "))#1º Valor do intervalo [a,b]
-   b = float(input("Insira b: "))
-   p = float(input("Insira a precisão(Entre 1 - 16): "))#Numero de casas decimais
-   pl = 10**(-p)#Definindo a precisão em numeros decimais 
-   if (f(fx ,a)*f(fx ,b) < 0):#Aplicando Bozzano
-      x = (a+b)/2#1ª media do intervalo
-      
-      if (f(fx,x)*f(fx,b)<0):#Define se o Numero achado será o novo "a" ou o novo "b"
-         a = x
-      else:
-         b = x
-      while (abs(f(fx,x))>pl):#Cria um loop em que ele só termina caso o numero atender a precisão
-         x = (a+b)/2
-         if (f(fx,x)*f(fx,b)<0):
+def trun_n_d(n, d):
+    # dando split no numero pelo "." criando uma lista com 2 valores , um com o numero inteiro e outro com um numero decimal
+    s = repr(n).split('.')
+    if (len(s) == 1):
+        # se s só tiver 1 valor é porque o numero ja é inteiro , por isso retorna ele mesmo
+        return int(s[0])
+    # retorna o numero inteira + "." + o 1 valor + uma sequencia de numeros definida por "d"
+    return float(s[0]+'.'+s[1][:int(d)])
+
+
+def bisseccao():
+    fx = input("Insira a função: ")
+
+    a = float(input("Insira a: "))  # 1º Valor do intervalo [a,b]
+    b = float(input("Insira b: "))
+    # Numero de casas decimais
+    p = float(input("Insira a precisão(Entre 1 - 16): "))
+    pl = 10**(-p)  # Definindo a precisão em numeros decimais
+    if (f(fx, a)*f(fx, b) < 0):  # Aplicando Bozzano
+        x = (a+b)/2  # 1ª media do intervalo
+
+        if (f(fx, x)*f(fx, b) < 0):  # Define se o Numero achado será o novo "a" ou o novo "b"
             a = x
-         else:
+        else:
             b = x
-      x = trun_n_d(x,p)#Trunca o  numero pra caber na precisão
-      print("A raiz da função , com precisão de {} casas decimais , é {}".format(p,x))
-   else:
-      print("Não tem raiz unica no intervalo")#Caso Bozzano esteja falso
+        while (abs(f(fx, x)) > pl):  # Cria um loop em que ele só termina caso o numero atender a precisão
+            x = (a+b)/2
+            if (f(fx, x)*f(fx, b) < 0):
+                a = x
+            else:
+                b = x
+        x = trun_n_d(x, p)  # Trunca o  numero pra caber na precisão
+        print("A raiz da função , com precisão de {} casas decimais , é {}".format(p, x))
+    else:
+        print("Não tem raiz unica no intervalo")  # Caso Bozzano esteja falso
+
+
 '''
 
 
@@ -325,39 +345,39 @@ guiout = """
 
 '''
 while True:
-	x = int(input(gui1))
+    x = int(input(gui1))
 
-	if x == 1:
-		y = int(input(gui2))
-		if y == 1:
-			bisseccao()
-			continue
-		else:
-			print(guin)
-			continue
-	elif x == 2:
-		y = int(input(gui3))
-		if y == 1:
-			newton()
-			continue
-		else:
-			print(guin)
-	elif x == 3:
-		y = int(input(gui4))
-		if y == 1:
-			simpson()
-			continue
-		else:
-			print(guin)
-			continue
-	elif x == 4:
-		y = int(input(gui5))
-		if y == 1:
-			jacobi1()
-			continue
-		else:
-			print(guin)
-			continue
-	elif x == 0:
-		print(guiout)
-		break
+    if x == 1:
+        y = int(input(gui2))
+        if y == 1:
+            bisseccao()
+            continue
+        else:
+            print(guin)
+            continue
+    elif x == 2:
+        y = int(input(gui3))
+        if y == 1:
+            newton()
+            continue
+        else:
+            print(guin)
+    elif x == 3:
+        y = int(input(gui4))
+        if y == 1:
+            simpson()
+            continue
+        else:
+            print(guin)
+            continue
+    elif x == 4:
+        y = int(input(gui5))
+        if y == 1:
+            jacobi()
+            continue
+        else:
+            print(guin)
+            continue
+    elif x == 0:
+        print(guiout)
+        break
