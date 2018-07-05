@@ -9,96 +9,96 @@ from math import *
 import math
 from pprint import pprint
 from numpy import array, zeros, diag, diagflat, dot
+from numpy.polynomial import Polynomial as P
+from numpy import polynomial
+
 
 
 def f(fx,x):#definindo a função matematica
    f = eval(fx)
    return f
 
-'''
-
-
-		METODO DE NEWTON
-
-
-'''
 
 def newton():
-	from numpy.polynomial import Polynomial as P
-	from numpy import polynomial
 
-	print("Interpolação de Newton")
+    pontos = []
+    k = 0
+    while True:
+        k += 1
+        while True:
+            print("Digite as coordenadas do ", k, "º ponto separados por espaço:", end="\nf para finalizar \n")
+            l = input()  # irá receber a entrada do usuário
+            if l == "f".lower():  # Verifica se o usuário quer terminar a entrada de dados
+                break
+            l = l.split()  # transforma a entrada do usuário numa lista de strings
+            if len(l) == 2:  # verifica se o usuário entrou com um ponto do R2
+                break
+            else:
+                print("Entrada inválida, tente novamente!")
+        if l == "f".lower():
+            break
+        for i in range(len(l)):  # transfoma a entrada do usuário em um ponto e adiciona a lista de pontos
+            l[i] = float(l[i])
+        pontos.append(l)
 
-	pontos = []
-	k = 0
-	while True:
-	    k += 1
-	    while True:
-		print("Digite as coordenadas do ", k, "º ponto separados por espaço:", end="\nf para finalizar \n")
-		l = input()
-		if l == "f".lower():
-		    break
-		l = l.split()
-		if len(l) == 2:
-		    break
-		else:
-		    print("Entrada inválida, tente novamente!")
-	    if l == "f".lower():
-		break
-	    for i in range(len(l)):
-		l[i] = float(l[i])
-	    pontos.append(l)
-	l = []
-	for i in range(len(pontos)):
-	    l.append(pontos[i][1])
-	tabela = []
-	tabela.append(l)
-		for i in range(len(pontos) - 1):
-	    l = []
-	    for j in range(len(pontos) - i - 1):
-		dif = (tabela[i][j + 1] - tabela[i][j]) / (pontos[j + 1 + i][0] - pontos[j][0])
-		l.append(dif)
-	    tabela.append(l) 
-	difdiv = []
-	for i in range(len(tabela)):
-	    difdiv.append(tabela[i][0])
-	somatorio = 0
-	for i in range(1, len(pontos)):
-	    produtorio = 1
-	    for k in range(i):
-		produtorio *= (P([-pontos[k][0], 1]))
-	    somatorio += difdiv[i] * produtorio
-	Pn = difdiv[0] + somatorio
-	funcao = list(Pn)
-	texto = ""
-	for i in range(len(funcao)):
-	    if funcao[i] == 0:
-		continue
-	    elif i == 0:
-		texto += str(funcao[i])
-	    else:
-		texto += " + " + str(funcao[i])
-		texto += ("*x^%o" % (i))
-	print("Pn(x) :")
-	print(texto)
-	s = input(
-	    "Deseja calcular Pn(x) dado um valor de x? \n [S/N]").lower()  # para desativar essa função é só colocar ""# depois de s=
-	if s == "s":
-	    print("Pn(x) em qual ponto?")
-	    p = float(input())
-	    print("Pn(%a) é igual a %a" % (p, Pn(p)))
-	print("Raízes de Pn(x): ", polynomial.polynomial.polyroots(list(Pn)))
-	s = input(
-	    "Encontrar os valores de x dado um valor de Pn(x)? \n [S/N]")  # para desativar essa função é só colocar ""# depois de s=
-	if s == "s":
-	    print("Valores de x para qual valor de Pn(x)")
-	    p = float(input())
-	    print("para Pn(x)=%a temos: " % p, polynomial.polynomial.polyroots(list(Pn - P([p]))),
-		  "Obs: Se houver, j = raiz de menos 1")
-	print("(x,Pn(x))")
-	for i in range(len(pontos)):
-	    print("(%a,%a)" % (pontos[i][0], round(Pn(pontos[i][0]), 4)))
-
+    l = []
+    for i in range(len(pontos)):
+        l.append(pontos[i][1])
+    tabela = []  # Será a tabela de diferenças divididas
+    tabela.append(l)
+    # Calcula as diferenças divididas
+    # o polinômio a+bX+cX^2 eu tenho que escrever P([a,b,c]), logo P([1,2,3...n]) = 1+2x+3x^2+....nx^(n-1)
+    for i in range(len(pontos) - 1):
+        l = []  # lista que irá receber as diferenças divididas de ordem i+1
+        for j in range(len(pontos) - i - 1):
+            # calculando a j+1 difença dividida de ordem i+1
+            dif = (tabela[i][j + 1] - tabela[i][j]) / (pontos[j + 1 + i][0] - pontos[j][0])
+            l.append(dif)
+        tabela.append(l)  # adiciona a tabela de diferenças divididas as difenças divididas de ordem i+1
+    difdiv = []  # irei pegar a primeira diferença dividida de cada ordem e adicionar a essa lista,
+    # pois elas corresponderão a d0, d1... dn do polinômio como na fórmula da página 220 do livro
+    for i in range(len(tabela)):
+        difdiv.append(tabela[i][0])
+    # Aqui será feito o Somatório do final da página
+    somatorio = 0
+    for i in range(1, len(pontos)):
+        produtorio = 1
+        for k in range(i):  # Aqui será feito o produtório do final da página
+            produtorio *= (P([-pontos[k][0], 1]))  # P([-pontos[k][0], 1]) = (X-Xk)
+        somatorio += difdiv[i] * produtorio
+    Pn = difdiv[0] + somatorio
+    funcao = list(Pn)  # tranformo o polinômio em lista
+    # transformando o polinômio para uma formato mais legível
+    texto = ""
+    for i in range(len(funcao)):
+        if funcao[i] == 0:
+            continue
+        elif i == 0:
+            texto += str(funcao[i])
+        else:
+            texto += " + " + str(funcao[i])
+            texto += ("*x^%o" % (i))
+    print("Pn(x) :")
+    print(texto)
+    s = input(
+        "Deseja calcular Pn(x) dado um valor de x? \n [S/N]").lower()  # para desativar essa função é só colocar ""# depois de s=
+    if s == "s":
+        print("Pn(x) em qual ponto?")
+        p = float(input())
+        print("Pn(%a) é igual a %a" % (p, Pn(p)))
+    print("Raízes de Pn(x): ", polynomial.polynomial.polyroots(list(Pn)))
+    s = input(
+        "Encontrar os valores de x dado um valor de Pn(x)? \n [S/N]")  # para desativar essa função é só colocar ""# depois de s=
+    if s == "s":
+        print("Valores de x para qual valor de Pn(x)")
+        p = float(input())
+        print("para Pn(x)=%a temos: " % p, polynomial.polynomial.polyroots(list(Pn - P([p]))),
+              "Obs: Se houver, j = raiz de menos 1")
+    # calculando f(x) nos pontos dados através de Pn(x)
+    print("(x,Pn(x))")
+    for i in range(len(pontos)):
+        print("(%a,%a)" % (pontos[i][0], round(Pn(pontos[i][0]), 4)))
+    
 '''
 
 
